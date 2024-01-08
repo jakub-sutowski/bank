@@ -22,6 +22,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BankService {
+
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final TransactionHistoryService transactionHistoryService;
@@ -41,10 +42,13 @@ public class BankService {
         String email = request.getMail();
         String token = request.getToken();
         double amount = request.getAmount();
+
         String tokenStatus = checkToken(email, token);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotExist(email));
+
         if (SUCCESS_CODE.equals(tokenStatus)) {
             double balance = user.getBalance();
+
             if (amount <= balance) {
                 user.setBalance(balance - amount);
                 userRepository.save(user);
@@ -65,6 +69,7 @@ public class BankService {
         ValidateRequest validateRequest = new ValidateRequest(mail, token);
 
         ResponseEntity<ValidateResponse> validateResponse = restTemplate.postForEntity(validUrl, validateRequest, ValidateResponse.class);
+
         return Optional.ofNullable(validateResponse.getBody())
                 .map(ValidateResponse::getStatusCode)
                 .orElseThrow(ValidationRequestException::new);

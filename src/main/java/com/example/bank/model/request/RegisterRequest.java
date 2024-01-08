@@ -1,4 +1,4 @@
-package com.example.bank.model.dto;
+package com.example.bank.model.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class RegisterRequest {
 
     @NotNull
     @Email
