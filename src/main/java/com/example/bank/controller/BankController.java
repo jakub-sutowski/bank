@@ -1,11 +1,12 @@
 package com.example.bank.controller;
 
-import com.example.bank.model.request.RegisterRequest;
 import com.example.bank.model.request.PaymentRequest;
-import com.example.bank.model.response.PaymentResponse;
-import com.example.bank.model.response.RegisterResponse;
+import com.example.bank.model.request.RegisterRequest;
+import com.example.bank.model.response.StatusResponse;
 import com.example.bank.service.BankService;
 import com.example.bank.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,24 @@ public class BankController {
     private final BankService bankService;
     private final UserService userService;
 
-    @PostMapping("/register/allegro")
-    public ResponseEntity<RegisterResponse> addUserFromAllegro(@RequestBody RegisterRequest registerRequest) {
-        RegisterResponse registerResponse = userService.addUserFromAllegro(registerRequest);
-        return ResponseEntity.ok(registerResponse);
+    @Operation(
+            summary = "Add user from Shop",
+            description = "Registers a new user from Shop."
+    )
+    @PostMapping("/register/shop")
+    public ResponseEntity<StatusResponse> addUserFromShop(@Valid @RequestBody RegisterRequest request) {
+        StatusResponse response = userService.addUserFromShop(request);
+        return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            summary = "Process payment",
+            description = "Processes a payment."
+    )
     @PostMapping("/pay")
-    public ResponseEntity<PaymentResponse> pay(@RequestBody PaymentRequest paymentRequest) {
-        PaymentResponse paymentResponse = bankService.pay(paymentRequest);
-        return ResponseEntity.ok(paymentResponse);
+    public ResponseEntity<StatusResponse> pay(@Valid @RequestBody PaymentRequest request) {
+        StatusResponse statusResponse = bankService.pay(request);
+        return ResponseEntity.ok(statusResponse);
     }
 
 }

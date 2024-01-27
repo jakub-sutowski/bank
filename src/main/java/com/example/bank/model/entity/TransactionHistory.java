@@ -1,5 +1,6 @@
 package com.example.bank.model.entity;
 
+import com.example.bank.type.StatusCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,6 @@ public class TransactionHistory {
 
     private LocalDateTime transactionTime;
 
-    private String statusCode;
+    private StatusCode statusCode;
 
 }

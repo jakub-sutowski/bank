@@ -1,5 +1,6 @@
 package com.example.bank.model.response;
 
+import com.example.bank.type.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidateResponse {
+public class StatusResponse {
 
-    private String statusCode;
+    private StatusCode statusCode;
 }

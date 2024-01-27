@@ -1,9 +1,11 @@
 package com.example.bank.service;
 
-import com.example.bank.model.request.RegisterRequest;
+import com.example.bank.exception.exceptions.UserAlreadyExist;
 import com.example.bank.model.entity.User;
-import com.example.bank.model.response.RegisterResponse;
+import com.example.bank.model.request.RegisterRequest;
+import com.example.bank.model.response.StatusResponse;
 import com.example.bank.repository.UserRepository;
+import com.example.bank.type.StatusCode;
 import com.example.bank.validation.UserValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserValidation userValidation;
 
-    public static final String USER_CREATED_CODE = "7";
-    public static final String USER_ALREADY_EXIST_CODE = "8";
-
     @Transactional
-    public RegisterResponse addUserFromAllegro(RegisterRequest registerRequest) {
+    public StatusResponse addUserFromShop(RegisterRequest registerRequest) {
         String email = registerRequest.getEmail();
         try {
             userValidation.register(email);
@@ -29,9 +28,9 @@ public class UserService {
                     .balance(10000)
                     .build();
             userRepository.save(user);
-            return new RegisterResponse(USER_CREATED_CODE);
-        } catch (Exception e) {
-            return new RegisterResponse(USER_ALREADY_EXIST_CODE);
+            return new StatusResponse(StatusCode.USER_CREATED);
+        } catch (UserAlreadyExist e) {
+            return new StatusResponse(StatusCode.USER_ALREADY_EXIST);
         }
     }
 }
